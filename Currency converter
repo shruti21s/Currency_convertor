@@ -1,0 +1,75 @@
+package currency;
+
+import javax.jws.WebService;
+import javax.jws.WebMethod;
+import javax.jws.WebParam;
+
+@WebService(serviceName = "CurrencyService")
+
+public class CurrencyService {
+
+    @WebMethod(operationName = "rupeeToDollar")
+
+    public double rupeeToDollar(@WebParam(name="rupee") double rupee)
+    {
+        double dollar = rupee / 83;
+        return dollar;
+    }
+
+    @WebMethod(operationName = "dollarToRupee")
+
+    public double dollarToRupee(@WebParam(name="dollar") double dollar)
+    {
+        double rupee = dollar * 83;
+        return rupee;
+    }
+}
+
+input.jsp
+<html>
+<body>
+
+<h2>Currency Converter</h2>
+
+<form action="output.jsp">
+
+Enter Rupees:
+<input type="text" name="r1"><br><br>
+
+Enter Dollars:
+<input type="text" name="d1"><br><br>
+
+<input type="submit" value="Convert">
+
+</form>
+
+</body>
+</html
+
+output.jsp
+
+<%@page import="currency.*"%>
+<%
+
+double rupee = Double.parseDouble(request.getParameter("r1"));
+double dollar = Double.parseDouble(request.getParameter("d1"));
+
+currency.CurrencyService_Service service = new currency.CurrencyService_Service();
+currency.CurrencyService port = service.getCurrencyServicePort();
+
+double result1 = port.rupeeToDollar(rupee);
+double result2 = port.dollarToRupee(dollar);
+
+%>
+
+<html>
+<body>
+
+<h3>Conversion Result</h3>
+
+Rupee to Dollar = <%=result1%> <br><br>
+
+Dollar to Rupee = <%=result2%>
+
+</body>
+</html>
